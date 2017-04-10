@@ -6,6 +6,7 @@
 package Tugas6;
 
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,6 +24,7 @@ public class FormDataBuku extends javax.swing.JFrame {
 
     private void InitTable(){
         model = new DefaultTableModel();
+        model.addColumn("ID BUKU");
         model.addColumn("JUDUL");
         model.addColumn("PENULIS");
         model.addColumn("HARGA");
@@ -36,10 +38,11 @@ public class FormDataBuku extends javax.swing.JFrame {
     stt = con.createStatement();
     rss = stt.executeQuery(sql);
     while(rss.next()){
-        Object[] o = new Object[3];
-        o[0] = rss.getString("judul");
-        o[1] = rss.getString("penulis");
-        o[2] = rss.getString("harga");
+        Object[] o = new Object[4];
+        o[0] = rss.getString("id");
+        o[1] = rss.getString("judul");
+        o[2] = rss.getString("penulis");
+        o[3] = rss.getString("harga");
         model.addRow(o);
         }
     }catch(SQLException e){
@@ -57,6 +60,32 @@ public class FormDataBuku extends javax.swing.JFrame {
             model.addRow(new Object []{judul,penulis,harga});
         }catch(SQLException e){
             System.out.println(e.getMessage());
+        }
+    }
+    
+    public boolean UbahData(String id, String judul, String penulis, String harga){
+        try{
+            String sql = "Update buku set judul='"+judul
+                    +"', penulis ='"+penulis+"', harga="+harga
+                    +" where id="+id+";";
+            stt = con.createStatement();
+            stt.executeUpdate(sql);
+            return true;
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
+    public boolean HapusData(String id){
+        try{
+            String sql = "Delete from buku where id="+id+";";
+            stt = con.createStatement();
+            stt.executeUpdate(sql);
+            return true;
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
     /**
@@ -77,7 +106,7 @@ public class FormDataBuku extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         TFjudul = new javax.swing.JTextField();
         TFharga = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        CBpenulis = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         BtnSimpan = new javax.swing.JButton();
         BtnUbah = new javax.swing.JButton();
@@ -139,7 +168,7 @@ public class FormDataBuku extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tere Liye", "W.S Rendra", "Felix Siauw", "Asma Nadia", "Dewi Lestari" }));
+        CBpenulis.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tere Liye", "W.S Rendra", "Felix Siauw", "Asma Nadia", "Dewi Lestari" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -155,7 +184,7 @@ public class FormDataBuku extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(TFjudul, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, 175, Short.MAX_VALUE)
+                        .addComponent(CBpenulis, javax.swing.GroupLayout.Alignment.LEADING, 0, 175, Short.MAX_VALUE)
                         .addComponent(TFharga, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -169,7 +198,7 @@ public class FormDataBuku extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CBpenulis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -248,6 +277,11 @@ public class FormDataBuku extends javax.swing.JFrame {
                 "JUDUL", "PENULIS", "HARGA"
             }
         ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -337,9 +371,11 @@ public class FormDataBuku extends javax.swing.JFrame {
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
         // TODO add your handling code here:
         String judul = TFjudul.getText();
-        String penulis = jComboBox1.getSelectedItem().toString();
+        String penulis = CBpenulis.getSelectedItem().toString();
         String harga = TFharga.getText();
         TambahData(judul, penulis, harga);
+        InitTable();
+        TampilData();
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -360,12 +396,26 @@ public class FormDataBuku extends javax.swing.JFrame {
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         // TODO add your handling code here:
          int baris = jTable1.getSelectedRow();
-         model.removeRow(baris);
+         String id = jTable1.getValueAt(baris, 0).toString();
+         if(HapusData(id))
+             JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
+         else
+             JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
+         InitTable();TampilData();
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUbahActionPerformed
         // TODO add your handling code here:
-         
+        int baris = jTable1.getSelectedRow();
+        String id = jTable1.getValueAt(baris, 0).toString();
+        String judul = TFjudul.getText();
+        String penulis = CBpenulis.getSelectedItem().toString();
+        String harga = TFharga.getText();
+        if(UbahData(id, judul, penulis, harga))
+            JOptionPane.showMessageDialog(null,"Berhasil Update Data");
+        else
+           JOptionPane.showMessageDialog(null,"Gagal Update Data"); 
+        InitTable();TampilData();
     }//GEN-LAST:event_BtnUbahActionPerformed
 
     private void TFsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TFsearchActionPerformed
@@ -374,17 +424,14 @@ public class FormDataBuku extends javax.swing.JFrame {
 
     private void TFsearchKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TFsearchKeyTyped
         // TODO add your handling code here:
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Judul");
-        model.addColumn("Penulis");
-        model.addColumn("Harga");
-        
+        InitTable();
         try{
             String sql = "select * from buku where "+CBby.getSelectedItem().toString()+" Like '%"+TFsearch.getText()+"%'";
             stt = con.createStatement();
             rss = stt.executeQuery(sql);
             while(rss.next()){
                 model.addRow(new Object[]{
+                    rss.getString(1),
                     rss.getString(2),
                     rss.getString(3),
                     rss.getString(4),
@@ -394,7 +441,17 @@ public class FormDataBuku extends javax.swing.JFrame {
         }catch(Exception e){
             
         }
+        
     }//GEN-LAST:event_TFsearchKeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int baris = jTable1.getSelectedRow();
+        
+        TFjudul.setText(jTable1.getValueAt(baris, 1).toString());
+        CBpenulis.setSelectedItem(jTable1.getValueAt(baris, 2).toString());
+        TFharga.setText(jTable1.getValueAt(baris, 3).toString());
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -441,10 +498,10 @@ public class FormDataBuku extends javax.swing.JFrame {
     private javax.swing.JButton BtnSimpan;
     private javax.swing.JButton BtnUbah;
     private javax.swing.JComboBox<String> CBby;
+    private javax.swing.JComboBox<String> CBpenulis;
     private javax.swing.JTextField TFharga;
     private javax.swing.JTextField TFjudul;
     private javax.swing.JTextField TFsearch;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -458,3 +515,4 @@ public class FormDataBuku extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+}

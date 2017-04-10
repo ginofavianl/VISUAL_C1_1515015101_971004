@@ -55,15 +55,12 @@ public class kalkulator extends javax.swing.JFrame {
 
         jLabel4.setText(":");
 
-<<<<<<< HEAD
         TBIL1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TBIL1ActionPerformed(evt);
             }
         });
 
-=======
->>>>>>> PostTest 2 KTP
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -81,14 +78,9 @@ public class kalkulator extends javax.swing.JFrame {
                         .addComponent(TBIL2, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
-<<<<<<< HEAD
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(TBIL1)
                         .addGap(6, 6, 6)))
-=======
-                        .addGap(18, 18, 18)
-                        .addComponent(TBIL1)))
->>>>>>> PostTest 2 KTP
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -290,13 +282,10 @@ public class kalkulator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_RKALIActionPerformed
 
-<<<<<<< HEAD
     private void TBIL1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TBIL1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_TBIL1ActionPerformed
 
-=======
->>>>>>> PostTest 2 KTP
     /**
      * @param args the command line arguments
      */

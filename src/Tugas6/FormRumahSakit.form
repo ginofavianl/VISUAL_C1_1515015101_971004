@@ -499,10 +499,10 @@
                     <Column editable="true" title="Tanggal Lahir" type="java.lang.Object"/>
                     <Column editable="true" title="Usia" type="java.lang.Object"/>
                     <Column editable="true" title="Jenis Kelamin" type="java.lang.Object"/>
+                    <Column editable="true" title="Diagnosa" type="java.lang.Object"/>
                     <Column editable="true" title="Dokter" type="java.lang.Object"/>
                     <Column editable="true" title="Ruangan" type="java.lang.Object"/>
                     <Column editable="true" title="Tanggal Masuk" type="java.lang.Object"/>
-                    <Column editable="true" title="Diagnosa" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>

@@ -31,10 +31,10 @@ public class FormRumahSakit extends javax.swing.JFrame {
         model.addColumn("Tanggal Lahir");
         model.addColumn("Usia");
         model.addColumn("Jenis Kelamin");
+        model.addColumn("Diagnosa");
         model.addColumn("Dokter");
         model.addColumn("Ruangan");
         model.addColumn("Tanggal Masuk");
-        model.addColumn("Diagnosa");
         
         jTable1.setModel(model);
     }
@@ -50,10 +50,10 @@ public class FormRumahSakit extends javax.swing.JFrame {
         o[1] = rss.getString("tl");
         o[2] = rss.getString("usia");
         o[3] = rss.getString("jk");
-        o[4] = rss.getString("dokter");
-        o[5] = rss.getString("ruangan");
-        o[6] = rss.getString("tgl_masuk");
-        o[7] = rss.getString("diagnosa");
+        o[4] = rss.getString("diagnosa");
+        o[5] = rss.getString("dokter");
+        o[6] = rss.getString("ruangan");
+        o[7] = rss.getString("tgl_masuk");
         model.addRow(o);
         }
     }catch(SQLException e){
@@ -61,14 +61,14 @@ public class FormRumahSakit extends javax.swing.JFrame {
     }
 }
 
-     private void TambahData(String nama_pasien, String tl, String usia, String jk, String dokter, String ruangan, String tgl_masuk, String diagnosa){
+     private void TambahData(String nama_pasien, String tl, String usia, String jk,  String diagnosa, String dokter, String ruangan, String tgl_masuk){
         try{
             String sql =
                     "INSERT INTO rumahsakit VALUES (NULL ,'"+nama_pasien+"','"+tl+"','"+usia+"','"+
-                    jk+"','"+dokter+"','"+ruangan+"','"+tgl_masuk+"','"+diagnosa+"')";
+                    jk+"','"+diagnosa+"','"+dokter+"','"+ruangan+"','"+tgl_masuk+"')";
             stt = con.createStatement();
             stt.executeUpdate(sql);
-            model.addRow(new Object []{nama_pasien, tl, usia, jk, dokter, ruangan, tgl_masuk, diagnosa});
+            model.addRow(new Object []{nama_pasien, tl, usia, jk, diagnosa, dokter, ruangan, tgl_masuk});
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -371,7 +371,7 @@ public class FormRumahSakit extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Nama", "Tanggal Lahir", "Usia", "Jenis Kelamin", "Dokter", "Ruangan", "Tanggal Masuk", "Diagnosa"
+                "Nama", "Tanggal Lahir", "Usia", "Jenis Kelamin", "Diagnosa", "Dokter", "Ruangan", "Tanggal Masuk"
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -524,11 +524,11 @@ public class FormRumahSakit extends javax.swing.JFrame {
                     "Warning",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+        String diagnosa = Listdiagnosa.getSelectedValuesList().toString();
         String dokter = CBdokter.getSelectedItem().toString();
         String ruangan = CBruangan.getSelectedItem().toString();
         String tgl_masuk= TFtglmasuk.getText();
-        String diagnosa = Listdiagnosa.getSelectedValuesList().toString();
-        TambahData(nama, tgl_lahir, usia, jenis_kelamin, dokter, ruangan, tgl_masuk, diagnosa);
+        TambahData(nama, tgl_lahir, usia, jenis_kelamin, diagnosa, dokter, ruangan, tgl_masuk);
     }
     }//GEN-LAST:event_BtnsimpanActionPerformed
 
@@ -654,10 +654,11 @@ public class FormRumahSakit extends javax.swing.JFrame {
                 o[1] = rss.getString("tl");
                 o[2] = rss.getString("usia");
                 o[3] = rss.getString("jk");
-                o[4] = rss.getString("dokter");
-                o[5] = rss.getString("ruangan");
-                o[6] = rss.getString("tgl_masuk");
-                o[7] = rss.getString("diagnosa");
+                o[4] = rss.getString("diagnosa");
+                o[5] = rss.getString("dokter");
+                o[6] = rss.getString("ruangan");
+                o[7] = rss.getString("tgl_masuk");
+                
             model.addRow(o);
             }
             stt.close();
