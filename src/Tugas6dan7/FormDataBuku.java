@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Tugas6;
+package Tugas6dan7;
 
 import java.sql.*;
 import javax.swing.JOptionPane;
@@ -85,6 +85,21 @@ public class FormDataBuku extends javax.swing.JFrame {
             return true;
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    
+    private boolean validasi(String judul,String penulis){
+        try {
+            String sql = "SELECT * FROM buku WHERE judul='"+judul+"' AND penulis='"+penulis+"';";
+            stt = con.createStatement();
+            rss = stt.executeQuery(sql);
+            if(rss.next())
+                return true;
+            else 
+                return false;
+        } catch (SQLException e) {
+            System.out.print(e.getMessage());
             return false;
         }
     }
@@ -370,12 +385,22 @@ public class FormDataBuku extends javax.swing.JFrame {
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
         // TODO add your handling code here:
+        if(TFjudul.getText().length()!=0 && TFharga.getText().length()!=0){
         String judul = TFjudul.getText();
         String penulis = CBpenulis.getSelectedItem().toString();
         String harga = TFharga.getText();
+        
+        if(validasi(judul,penulis)){
+                JOptionPane.showMessageDialog(this, "Judul dan Penulis Sudah Ada Gannnn!");
+        }else{
         TambahData(judul, penulis, harga);
         InitTable();
         TampilData();
+        JOptionPane.showMessageDialog(this, "Berhasil Simpan Data");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Isi Data yang Lengkap Jangan Kosong Seperti Hatimu");
+        }
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -395,27 +420,52 @@ public class FormDataBuku extends javax.swing.JFrame {
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         // TODO add your handling code here:
+        if(TFjudul.getText().length()!=0 && TFharga.getText().length()!=0){
          int baris = jTable1.getSelectedRow();
          String id = jTable1.getValueAt(baris, 0).toString();
+         String judul = TFjudul.getText();
+         String penulis = CBpenulis.getSelectedItem().toString();
+         String harga = TFharga.getText();
+         String tabelharga = jTable1.getValueAt(baris,3).toString();
          if(HapusData(id))
              JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
          else
              JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
          InitTable();TampilData();
+        }
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUbahActionPerformed
         // TODO add your handling code here:
+        if(TFjudul.getText().length()!=0 && TFharga.getText().length()!=0){
         int baris = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(baris, 0).toString();
         String judul = TFjudul.getText();
         String penulis = CBpenulis.getSelectedItem().toString();
         String harga = TFharga.getText();
-        if(UbahData(id, judul, penulis, harga))
+        String tabelharga = jTable1.getValueAt(baris, 3).toString();
+        if(validasi(judul,penulis)){
+            
+        if(tabelharga.equals(harga)){
+            JOptionPane.showMessageDialog(this, "Judul dan Penulis Sudah Ada Gannnn!");
+        }else{
+            UbahData(id, judul, penulis, harga);
+            InitTable();
+            TampilData();
             JOptionPane.showMessageDialog(null,"Berhasil Update Data");
-        else
-           JOptionPane.showMessageDialog(null,"Gagal Update Data"); 
-        InitTable();TampilData();
+            BtnUbah.setEnabled(false);
+            BtnHapus.setEnabled(false);
+            }
+        }else{
+            UbahData(id,judul,penulis,harga);
+            InitTable();
+            TampilData();
+            JOptionPane.showMessageDialog(null,"Berhasil Update Data");
+            BtnUbah.setEnabled(false);
+            BtnHapus.setEnabled(false);
+//            JOptionPane.showMessageDialog(this, "Isi data yang lengkap ya..");
+            }
+        }
     }//GEN-LAST:event_BtnUbahActionPerformed
 
     private void TFsearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TFsearchActionPerformed

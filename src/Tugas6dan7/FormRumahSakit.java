@@ -1,4 +1,4 @@
-package Tugas6;
+package Tugas6dan7;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
