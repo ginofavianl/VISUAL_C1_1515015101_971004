@@ -89,20 +89,20 @@ public class FormDataBuku extends javax.swing.JFrame {
         }
     }
     
-    private boolean validasi(String judul,String penulis){
-        try {
-            String sql = "SELECT * FROM buku WHERE judul='"+judul+"' AND penulis='"+penulis+"';";
-            stt = con.createStatement();
-            rss = stt.executeQuery(sql);
-            if(rss.next())
-                return true;
-            else 
+        private boolean validasi(String judul,String penulis){
+            try {
+                String sql = "SELECT * FROM buku WHERE judul='"+judul+"' AND penulis='"+penulis+"';";
+                stt = con.createStatement();
+                rss = stt.executeQuery(sql);
+                if(rss.next())
+                    return true;
+                else 
+                    return false;
+            } catch (SQLException e) {
+                System.out.print(e.getMessage());
                 return false;
-        } catch (SQLException e) {
-            System.out.print(e.getMessage());
-            return false;
+            }
         }
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -463,7 +463,6 @@ public class FormDataBuku extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Berhasil Update Data");
             BtnUbah.setEnabled(false);
             BtnHapus.setEnabled(false);
-//            JOptionPane.showMessageDialog(this, "Isi data yang lengkap ya..");
             }
         }
     }//GEN-LAST:event_BtnUbahActionPerformed
