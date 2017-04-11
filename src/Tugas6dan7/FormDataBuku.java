@@ -420,19 +420,14 @@ public class FormDataBuku extends javax.swing.JFrame {
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
         // TODO add your handling code here:
-        if(TFjudul.getText().length()!=0 && TFharga.getText().length()!=0){
-         int baris = jTable1.getSelectedRow();
-         String id = jTable1.getValueAt(baris, 0).toString();
-         String judul = TFjudul.getText();
-         String penulis = CBpenulis.getSelectedItem().toString();
-         String harga = TFharga.getText();
-         String tabelharga = jTable1.getValueAt(baris,3).toString();
+        int baris = jTable1.getSelectedRow();
+        String id = jTable1.getValueAt(baris,0).toString();
          if(HapusData(id))
-             JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
-         else
-             JOptionPane.showMessageDialog(null, "Berhasil Hapus Data");
-         InitTable();TampilData();
-        }
+            JOptionPane.showMessageDialog(null,"Berhasil Hapus Data");
+        else
+            JOptionPane.showConfirmDialog(null,"Gagal Hapus Data");
+        InitTable();
+        TampilData();
     }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUbahActionPerformed
